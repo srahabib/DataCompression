@@ -9,111 +9,35 @@ function CompressionApp() {
     setText(event.target.value);
   };
 
-  const compressText = () => {
-    // Simulate compression results for each technique
-    const runlengthResults = runlengthEncoding(text);
-    const huffmanResults = huffmanEncoding(text);
-    const arithmeticResults = arithmeticEncoding(text);
-    const golombResults = golombEncoding(text);
-    const lzwResults = lzwEncoding(text);
+  const compressText = async () => {
+    // Send a POST request to the Flask server to compress the text
+    const response = await fetch('/compress_text', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text }),
+    });
 
-    // Find the best compression ratio and technique
-    const techniques = [
-      { name: 'Runlength Encoding', results: runlengthResults },
-      { name: 'Huffman Encoding', results: huffmanResults },
-      { name: 'Arithmetic Encoding', results: arithmeticResults },
-      { name: 'Golomb Encoding', results: golombResults },
-      { name: 'LZW Encoding', results: lzwResults },
-    ];
+    // Get the compression results from the server response
+    const compressionResults = await response.json();
+
+    // Update state with the compression results
+    setResults(compressionResults);
+
+    // Find the best compression technique
     let bestCompressionRatio = 0;
     let bestTechnique = '';
 
-    techniques.forEach((technique) => {
-      if (technique.results.compression_ratio > bestCompressionRatio) {
-        bestCompressionRatio = technique.results.compression_ratio;
-        bestTechnique = technique.name;
+    Object.keys(compressionResults).forEach((technique) => {
+      const compressionRatio = compressionResults[technique].compression_ratio;
+      if (compressionRatio > bestCompressionRatio) {
+        bestCompressionRatio = compressionRatio;
+        bestTechnique = technique;
       }
     });
 
-    setResults({
-      'Runlength Encoding': runlengthResults,
-      'Huffman Encoding': huffmanResults,
-      'Arithmetic Encoding': arithmeticResults,
-      'Golomb Encoding': golombResults,
-      'LZW Encoding': lzwResults,
-    });
     setBestTechnique(bestTechnique);
-  };
-
-  const runlengthEncoding = (text) => {
-    const compressed = text.replace(/(.)\1*/g, (match, char) => {
-      const count = match.length;
-      return count === 1 ? char : `${count}${char}`;
-    });
-    const bits_before = text.length * 8;
-    const bits_after = compressed.length * 8;
-    const compression_ratio = ((text.length * 8 - compressed.length * 8) / (text.length * 8)) * 100;
-    const probability =0
-    const entropy =0
-    const average_length =0
-    const efficiency =0
-    return { compressed, bits_before, bits_after, compression_ratio ,probability ,entropy, average_length , efficiency };
-  };
-
-  const huffmanEncoding = (text) => {
-    // Implement Huffman Encoding logic here
-    // This is a placeholder for the actual implementation
-    // Simulating results for demonstration purposes
-    const bits_before = text.length * 8;
-    const bits_after = Math.ceil(text.length * 0.6) * 8;
-    const compression_ratio = ((text.length * 8 - Math.ceil(text.length * 0.6) * 8) / (text.length * 8)) * 100;
-    const probability =0
-    const entropy =0
-    const average_length =0
-    const efficiency =0
-    return { bits_before, bits_after, compression_ratio ,probability ,entropy, average_length , efficiency };
-  };
-
-  const arithmeticEncoding = (text) => {
-    // Implement Arithmetic Encoding logic here
-    // This is a placeholder for the actual implementation
-    // Simulating results for demonstration purposes
-    const bits_before = text.length * 8;
-    const bits_after = Math.ceil(text.length * 0.7) * 8;
-    const compression_ratio = ((text.length * 8 - Math.ceil(text.length * 0.7) * 8) / (text.length * 8)) * 100;
-    const probability =0
-    const entropy =0
-    const average_length =0
-    const efficiency =0
-    return { bits_before, bits_after, compression_ratio ,probability ,entropy, average_length , efficiency };
-  };
-
-  const golombEncoding = (text) => {
-    // Implement Golomb Encoding logic here
-    // This is a placeholder for the actual implementation
-    // Simulating results for demonstration purposes
-    const bits_before = text.length * 8;
-    const bits_after = Math.ceil(text.length * 0.8) * 8;
-    const compression_ratio = ((text.length * 8 - Math.ceil(text.length * 0.8) * 8) / (text.length * 8)) * 100;
-    const probability =0
-    const entropy =0
-    const average_length =0
-    const efficiency =0
-    return { bits_before, bits_after, compression_ratio ,probability ,entropy, average_length , efficiency };
-  };
-
-  const lzwEncoding = (text) => {
-    // Implement LZW Encoding logic here
-    // This is a placeholder for the actual implementation
-    // Simulating results for demonstration purposes
-    const bits_before = text.length * 8;
-    const bits_after = Math.ceil(text.length * 0.9) * 8;
-    const compression_ratio = ((text.length * 8 - Math.ceil(text.length * 0.9) * 8) / (text.length * 8)) * 100;
-    const probability =0
-    const entropy =0
-    const average_length =0
-    const efficiency =0
-    return { bits_before, bits_after, compression_ratio ,probability ,entropy, average_length ,efficiency };
   };
 
   return (
@@ -151,7 +75,6 @@ function CompressionApp() {
                 <p>Entropy: {results[technique].entropy.toFixed(2)}</p>
                 <p>Average Length: {results[technique].average_length.toFixed(2)}</p>
                 <p>Efficiency: {results[technique].efficiency.toFixed(2)}%</p>
-                {/* Add more details as needed */}
               </div>
             ))}
             {bestTechnique && (

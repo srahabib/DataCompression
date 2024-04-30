@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
-from textblob import TextBlob
 
 app = Flask(__name__)
 
-# Compression functions
+# Compression functions Example
 
 
 def runlength_encoding(text):
+    # Add Code Here
     compressed = ''
     i = 0
     while i < len(text):
@@ -20,11 +20,22 @@ def runlength_encoding(text):
     bits_after = len(compressed) * 8
     compression_ratio = ((len(text) * 8 - len(compressed)
                          * 8) / (len(text) * 8)) * 100
+    probability = 0
+    entropy = 0
+    average_length = 0
+    efficiency = 0
+
+    # Catch the values so I can print it
     return {
         'compressed': compressed,
         'bits_before': bits_before,
         'bits_after': bits_after,
-        'compression_ratio': compression_ratio
+        'compression_ratio': compression_ratio,
+        'probability': probability,
+        'entropy': entropy,
+        'average_length': average_length,
+        'efficiency': efficiency
+
     }
 
 
@@ -35,10 +46,19 @@ def huffman_encoding(text):
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
+    probability = 0
+    entropy = 0
+    average_length = 0
+    efficiency = 0
+
     return {
         'bits_before': bits_before,
         'bits_after': bits_after,
-        'compression_ratio': compression_ratio
+        'compression_ratio': compression_ratio,
+        'probability': probability,
+        'entropy': entropy,
+        'average_length': average_length,
+        'efficiency': efficiency
     }
 
 
@@ -49,10 +69,19 @@ def arithmetic_encoding(text):
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
+    probability = 0
+    entropy = 0
+    average_length = 0
+    efficiency = 0
+
     return {
         'bits_before': bits_before,
         'bits_after': bits_after,
-        'compression_ratio': compression_ratio
+        'compression_ratio': compression_ratio,
+        'probability': probability,
+        'entropy': entropy,
+        'average_length': average_length,
+        'efficiency': efficiency
     }
 
 
@@ -63,10 +92,18 @@ def golomb_encoding(text):
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
+    probability = 0
+    entropy = 0
+    average_length = 0
+    efficiency = 0
     return {
         'bits_before': bits_before,
         'bits_after': bits_after,
-        'compression_ratio': compression_ratio
+        'compression_ratio': compression_ratio,
+        'probability': probability,
+        'entropy': entropy,
+        'average_length': average_length,
+        'efficiency': efficiency
     }
 
 
@@ -77,10 +114,18 @@ def lzw_encoding(text):
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
+    probability = 0
+    entropy = 0
+    average_length = 0
+    efficiency = 0
     return {
         'bits_before': bits_before,
         'bits_after': bits_after,
-        'compression_ratio': compression_ratio
+        'compression_ratio': compression_ratio,
+        'probability': probability,
+        'entropy': entropy,
+        'average_length': average_length,
+        'efficiency': efficiency
     }
 
 # Route to calculate compression results
