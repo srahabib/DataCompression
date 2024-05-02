@@ -323,7 +323,7 @@ def runlength_encoding(text):
     bits_after = 0  # Placeholder, actual logic needed
     compression_ratio = Calc_compression_ratio(text, encoded_text_rl, "RLE")
     # Calculate probability
-    probability = 0
+    probability = Calc_probability(text)
     entropy = calculate_entropy(text)
     average_length = "out of course scope"
     efficiency = "out of course scope"
@@ -354,7 +354,7 @@ def huffman_encoding(text):
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
-    probability = 0
+    probability = Calc_probability(text)
     entropy = calculate_entropy(text)
     average_length = Calc_average_length(text)
     efficiency = (entropy/average_length)*100
@@ -371,9 +371,6 @@ def huffman_encoding(text):
 
 
 def arithmetic_encoding(text):
-    # Implement Arithmetic Encoding logic here
-    # Placeholder for actual implementation
-    # Simulate results for demonstration purposes
     Obj_ae = ArithmeticCodec()
     encoded_text_ae = Obj_ae.encode(text)
     decoded_text_ae = Obj_ae.decode(encoded_text_ae, len(text))
@@ -381,7 +378,7 @@ def arithmetic_encoding(text):
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = Calc_compression_ratio(text, encoded_text_ae, "AE")
-    probability = 0
+    probability = Calc_probability(text)
     entropy = calculate_entropy(text)
     average_length = "out of course scope"
     efficiency = "out of course scope"
@@ -409,7 +406,7 @@ def golomb_encoding(text):
         bits_after = len(encoded_text_gol)
         compression_ratio = Calc_compression_ratio(
             text, encoded_text_gol, "Golomb")
-        probability = 0
+        probability = Calc_probability(text)
         entropy = calculate_entropy(text)
         average_length = Calc_average_length(text)
         efficiency = (entropy/average_length)*100
@@ -436,9 +433,6 @@ def golomb_encoding(text):
 
 
 def lzw_encoding(text):
-    # Implement LZW Encoding logic here
-    # Placeholder for actual implementation
-    # Simulate results for demonstration purposes
     # LZW Encoding and Decoding
     lzw = LZW(127)
     encoded_text_lzw = lzw.lzw_compress(text)
@@ -447,7 +441,7 @@ def lzw_encoding(text):
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = Calc_compression_ratio(text, encoded_text_lzw, "LZW")
-    probability = 0
+    probability = Calc_probability(text)
     entropy = calculate_entropy(text)
     average_length = "out of course scope"
     efficiency = "out of course scope"

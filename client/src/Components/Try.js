@@ -72,13 +72,7 @@ function CompressionApp() {
                 <p>Bits Before Encoding: {results[technique].bits_before}</p>
                 <p>Bits After Encoding: {results[technique].bits_after}</p>
                 <p>Compression Ratio (%): {results[technique].compression_ratio}</p>
-                <p>Probability of Occurrence: {results[technique].probability}</p>
-                {/* <p>Probability of Occurrence:</p>
-                <ul>
-                  {Object.entries(results[technique].probability).map(([char, prob]) => (
-                    <li key={char}>{char}: {prob}</li>
-                  ))}
-                </ul> */}
+                <p>Probability of Occurrence: {JSON.stringify(results[technique].probability)}</p>
                 <p>Entropy: {results[technique].entropy}</p>
                 <p>Average Length: {results[technique].average_length}</p>
                 <p>Efficiency: {results[technique].efficiency}</p>
