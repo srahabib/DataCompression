@@ -8,6 +8,7 @@ function CompressionApp() {
   const handleTextChange = (event) => {
     setText(event.target.value);
   };
+  
 
   const compressText = async () => {
     // Send a POST request to the Flask server to compress the text
@@ -72,6 +73,12 @@ function CompressionApp() {
                 <p>Bits After Encoding: {results[technique].bits_after}</p>
                 <p>Compression Ratio (%): {results[technique].compression_ratio}</p>
                 <p>Probability of Occurrence: {results[technique].probability}</p>
+                {/* <p>Probability of Occurrence:</p>
+                <ul>
+                  {Object.entries(results[technique].probability).map(([char, prob]) => (
+                    <li key={char}>{char}: {prob}</li>
+                  ))}
+                </ul> */}
                 <p>Entropy: {results[technique].entropy}</p>
                 <p>Average Length: {results[technique].average_length}</p>
                 <p>Efficiency: {results[technique].efficiency}</p>

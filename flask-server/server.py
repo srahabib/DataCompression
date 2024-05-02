@@ -70,7 +70,7 @@ def Calc_compression_ratio(original_data, compressed_data, compression_type):
             len(bin(max(compressed_data))) - 2)  # Assuming its binary bits per code (for simplicity)
         return original_size / compressed_size
     elif compression_type == "AE" or compression_type == "Golomb":
-        return "Out of the course scope"
+        return "out of the course scope"
 
 
 def calculate_entropy(message):
@@ -314,10 +314,14 @@ class RunLengthCodec:
 
 
 def runlength_encoding(text):
-    # Add Code Here
+    # Run Length Encoding and Decoding
+    Obj_rl = RunLengthCodec()
+    encoded_text_rl = Obj_rl.run_length_encode(text)
+    decoded_text_rl = Obj_rl.run_length_decode(encoded_text_rl)
+
     bits_before = 0
     bits_after = 0  # Placeholder, actual logic needed
-    compression_ratio = 0
+    compression_ratio = Calc_compression_ratio(text, encoded_text_rl, "RLE")
     # Calculate probability
     probability = 0
     entropy = calculate_entropy(text)
@@ -339,9 +343,14 @@ def runlength_encoding(text):
 
 
 def huffman_encoding(text):
-    # Implement Huffman Encoding logic here
-    # Placeholder for actual implementation
-    # Simulate results for demonstration purposes
+    Obj_hf = HuffmanCodec()
+    Obj_hf.build_huffman_tree(text)
+    Obj_hf.generate_huffman_codes(Obj_hf.root)
+    encoded_text_hf = Obj_hf.huffman_encode(text)
+    decoded_text_hf = Obj_hf.huffman_decode(encoded_text_hf)
+    comp_ratio = Calc_compression_ratio(text, encoded_text_hf, "Huffman")
+    avg_len = Calc_average_length(encoded_text_hf)
+
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
@@ -353,10 +362,10 @@ def huffman_encoding(text):
     return {
         'bits_before': bits_before,
         'bits_after': bits_after,
-        'compression_ratio': compression_ratio,
+        'compression_ratio': comp_ratio,
         'probability': probability,
         'entropy': entropy,
-        'average_length': average_length,
+        'average_length': avg_len,
         'efficiency': efficiency
     }
 
@@ -365,9 +374,13 @@ def arithmetic_encoding(text):
     # Implement Arithmetic Encoding logic here
     # Placeholder for actual implementation
     # Simulate results for demonstration purposes
+    Obj_ae = ArithmeticCodec()
+    encoded_text_ae = Obj_ae.encode(text)
+    decoded_text_ae = Obj_ae.decode(encoded_text_ae, len(text))
+
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
-    compression_ratio = "Out of the course scope"
+    compression_ratio = Calc_compression_ratio(text, encoded_text_ae, "AE")
     probability = 0
     entropy = calculate_entropy(text)
     average_length = "out of course scope"
@@ -385,35 +398,55 @@ def arithmetic_encoding(text):
 
 
 def golomb_encoding(text):
-    # Implement Golomb Encoding logic here
-    # Placeholder for actual implementation
-    # Simulate results for demonstration purposes
-    bits_before = len(text) * 8
-    bits_after = bits_before  # Placeholder, actual logic needed
-    compression_ratio = 0  # Placeholder, actual logic needed
-    probability = 0
-    entropy = calculate_entropy(text)
-    average_length = Calc_average_length(text)
-    efficiency = (entropy/average_length)*100
-    return {
-        'bits_before': bits_before,
-        'bits_after': bits_after,
-        'compression_ratio': compression_ratio,
-        'probability': probability,
-        'entropy': entropy,
-        'average_length': average_length,
-        'efficiency': efficiency
-    }
+    if text.isdigit():  # Check if text is numeric
+        m = int(m)
+        num_text = int(text)
+        obj_gol = GolombCodec(m=m)
+        encoded_text_gol = obj_gol.encode(num_text)
+        decoded_text_gol = obj_gol.decode(encoded_text_gol)
+
+        bits_before = len(text) * 8
+        bits_after = len(encoded_text_gol)
+        compression_ratio = Calc_compression_ratio(
+            text, encoded_text_gol, "Golomb")
+        probability = 0
+        entropy = calculate_entropy(text)
+        average_length = Calc_average_length(text)
+        efficiency = (entropy/average_length)*100
+        return {
+            'bits_before': bits_before,
+            'bits_after': bits_after,
+            'compression_ratio': compression_ratio,
+            'probability': probability,
+            'entropy': entropy,
+            'average_length': average_length,
+            'efficiency': efficiency
+        }
+    else:
+        return {
+            'error': 'Input text must be numeric ',
+            'bits_before': 'Input text must be numeric ',
+            'bits_after': 'Input text must be numeric ',
+            'compression_ratio': 'Input text must be numeric',
+            'probability': 'Input text must be numeric ',
+            'entropy': 'Input text must be numeric ',
+            'average_length': 'Input text must be numeric ',
+            'efficiency': 'Input text must be numeric'
+        }
 
 
 def lzw_encoding(text):
     # Implement LZW Encoding logic here
     # Placeholder for actual implementation
     # Simulate results for demonstration purposes
+    # LZW Encoding and Decoding
+    lzw = LZW(127)
+    encoded_text_lzw = lzw.lzw_compress(text)
+    decoded_text_lzw = lzw.lzw_decompress(encoded_text_lzw)
 
     bits_before = len(text) * 8
     bits_after = bits_before  # Placeholder, actual logic needed
-    compression_ratio = 0  # Placeholder, actual logic needed
+    compression_ratio = Calc_compression_ratio(text, encoded_text_lzw, "LZW")
     probability = 0
     entropy = calculate_entropy(text)
     average_length = "out of course scope"
@@ -431,7 +464,7 @@ def lzw_encoding(text):
 # Route to calculate compression results
 
 
-@app.route("/compress_text", methods=["POST"])
+@ app.route("/compress_text", methods=["POST"])
 def compress_text():
     # Get the text from the request data
     text = request.json.get("text")
