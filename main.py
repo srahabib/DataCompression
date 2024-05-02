@@ -30,7 +30,7 @@ def average_length(message):
             frequencies[char] = 1
     result = 0
     message_length = len(message)
-    for key,frequency in frequencies.items():
+    for key, frequency in frequencies.items():
         probability = frequency / message_length
         result += probability * len(str(key))
     return result
@@ -40,26 +40,33 @@ def compression_ratio(original_data, compressed_data, compression_type):
     global original_size_h, original_size
     if compression_type == "Huffman":  # can work for GOLOMB in some examples
         if isinstance(original_data, str):
-            original_size_h = len(original_data) * 8  # Assuming 8 bits per character
+            # Assuming 8 bits per character
+            original_size_h = len(original_data) * 8
         elif isinstance(original_data, int):
-            original_size_h = len(bin(original_data)) - 2  # Assuming binary representation
+            # Assuming binary representation
+            original_size_h = len(bin(original_data)) - 2
         if isinstance(compressed_data, list):
-            compressed_size_h = sum(len(str(code)) for code in compressed_data)  # Sum of lengths of each code
+            # Sum of lengths of each code
+            compressed_size_h = sum(len(str(code)) for code in compressed_data)
         else:
-            compressed_size_h = len(compressed_data)  # Assuming it's already a binary string
+            # Assuming it's already a binary string
+            compressed_size_h = len(compressed_data)
         return original_size_h / compressed_size_h if compressed_size_h > 0 else 0
     elif compression_type == "RLE":
         original_size_r = len(original_data) * 8
         letters, numbers = zip(*compressed_data)
-        compressed_size_r = len(compressed_data) * (8 + math.ceil(math.log2(max(numbers) + 1)))
+        compressed_size_r = len(compressed_data) * \
+            (8 + math.ceil(math.log2(max(numbers) + 1)))
         return original_size_r / compressed_size_r
     elif compression_type == "LZW":  # can work for GOLOMB in some examples
         if isinstance(original_data, str):
-            original_size = len(original_data) * 8  # Assuming 8 bits per character
+            # Assuming 8 bits per character
+            original_size = len(original_data) * 8
         elif isinstance(original_data, int):
-            original_size = len(original_data) * len(bin(original_data)) - 2  # Assuming 8 bits per character
+            # Assuming 8 bits per character
+            original_size = len(original_data) * len(bin(original_data)) - 2
         compressed_size = len(compressed_data) * (
-                len(bin(max(compressed_data))) - 2)  # Assuming its binary bits per code (for simplicity)
+            len(bin(max(compressed_data))) - 2)  # Assuming its binary bits per code (for simplicity)
         return original_size / compressed_size
     elif compression_type == "AE" or compression_type == "Golomb":
         return "Out of the course scope"
@@ -234,7 +241,8 @@ class HuffmanCodec:
 
     def build_huffman_tree(self, text):
         freq_counter = Counter(text)
-        priority_queue = [self.Node(char, freq) for char, freq in freq_counter.items()]
+        priority_queue = [self.Node(char, freq)
+                          for char, freq in freq_counter.items()]
         heapq.heapify(priority_queue)
         while len(priority_queue) > 1:
             left = heapq.heappop(priority_queue)
@@ -257,7 +265,8 @@ class HuffmanCodec:
     def huffman_encode(self, text):
         encoded_text_list = []  # List to store each encoded character
         for char in text:
-            encoded_text_list.append(self.mapping[char])  # Append each encoded character to the list
+            # Append each encoded character to the list
+            encoded_text_list.append(self.mapping[char])
         return encoded_text_list
 
     def huffman_decode(self, encoded_text_list):
@@ -376,7 +385,8 @@ if text.isdigit():
     print("Original Value:", num_text)
     print("Encoded Value:", encoded_text_gol)
     print("Decoded Value:", decoded_text_gol)
-    print("Compression ratio:", compression_ratio(text, encoded_text_gol, "Golomb"))
+    print("Compression ratio:", compression_ratio(
+        text, encoded_text_gol, "Golomb"))
     print("Average Length: out of course scope")
     print("Efficiency: out of course scope")
     print()

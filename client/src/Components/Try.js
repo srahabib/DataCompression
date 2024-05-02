@@ -72,7 +72,7 @@ function CompressionApp() {
                 <p>Bits After Encoding: {results[technique].bits_after}</p>
                 <p>Compression Ratio (%): {results[technique].compression_ratio}</p>
                 <p>Probability of Occurrence: {results[technique].probability}</p>
-                <p>Entropy: {results[technique].entropy.toFixed(2)}</p>
+                <p>Entropy: {results[technique].entropy}</p>
                 <p>Average Length: {results[technique].average_length}</p>
                 <p>Efficiency: {results[technique].efficiency}</p>
               </div>

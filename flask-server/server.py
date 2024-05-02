@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # CODE FROM KAREEM
 
-def probability(message):
+def Calc_probability(message):
     frequencies = {}
     for char in message:
         if char in frequencies:
@@ -22,7 +22,7 @@ def probability(message):
     return prob
 
 
-def average_length(message):
+def Calc_average_length(message):
     frequencies = {}
     for char in message:
         if char in frequencies:
@@ -37,7 +37,7 @@ def average_length(message):
     return result
 
 
-def compression_ratio(original_data, compressed_data, compression_type):
+def Calc_compression_ratio(original_data, compressed_data, compression_type):
     global original_size_h, original_size
     if compression_type == "Huffman":  # can work for GOLOMB in some examples
         if isinstance(original_data, str):
@@ -315,8 +315,8 @@ class RunLengthCodec:
 
 def runlength_encoding(text):
     # Add Code Here
-    bits_before = len(text) * 8
-    bits_after = bits_before  # Placeholder, actual logic needed
+    bits_before = 0
+    bits_after = 0  # Placeholder, actual logic needed
     compression_ratio = 0
     # Calculate probability
     probability = 0
@@ -347,7 +347,7 @@ def huffman_encoding(text):
     compression_ratio = 0  # Placeholder, actual logic needed
     probability = 0
     entropy = calculate_entropy(text)
-    average_length = 1
+    average_length = Calc_average_length(text)
     efficiency = (entropy/average_length)*100
 
     return {
@@ -393,7 +393,7 @@ def golomb_encoding(text):
     compression_ratio = 0  # Placeholder, actual logic needed
     probability = 0
     entropy = calculate_entropy(text)
-    average_length = 1
+    average_length = Calc_average_length(text)
     efficiency = (entropy/average_length)*100
     return {
         'bits_before': bits_before,
