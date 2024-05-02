@@ -1,4 +1,7 @@
 from flask import Flask, jsonify, request
+from collections import Counter
+import heapq
+import math
 
 app = Flask(__name__)
 
@@ -7,19 +10,9 @@ app = Flask(__name__)
 
 def runlength_encoding(text):
     # Add Code Here
-    compressed = ''
-    i = 0
-    while i < len(text):
-        count = 1
-        while i + 1 < len(text) and text[i] == text[i + 1]:
-            i += 1
-            count += 1
-        compressed += str(count) + text[i]
-        i += 1
     bits_before = len(text) * 8
-    bits_after = len(compressed) * 8
-    compression_ratio = ((len(text) * 8 - len(compressed)
-                         * 8) / (len(text) * 8)) * 100
+    bits_after = bits_before  # Placeholder, actual logic needed
+    compression_ratio = 0
     probability = 0
     entropy = 0
     average_length = 0
@@ -27,7 +20,7 @@ def runlength_encoding(text):
 
     # Catch the values so I can print it
     return {
-        'compressed': compressed,
+
         'bits_before': bits_before,
         'bits_after': bits_after,
         'compression_ratio': compression_ratio,
