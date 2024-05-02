@@ -396,7 +396,7 @@ def arithmetic_encoding(text):
 
 def golomb_encoding(text):
     if text.isdigit():  # Check if text is numeric
-        m = int(m)
+        m = int(127)  # Convert m to an integer
         num_text = int(text)
         obj_gol = GolombCodec(m=m)
         encoded_text_gol = obj_gol.encode(num_text)
