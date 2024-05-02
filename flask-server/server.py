@@ -320,7 +320,7 @@ def runlength_encoding(text):
     compression_ratio = 0
     # Calculate probability
     probability = 0
-    entropy = 0
+    entropy = calculate_entropy(text)
     average_length = "out of course scope"
     efficiency = "out of course scope"
 
@@ -346,7 +346,7 @@ def huffman_encoding(text):
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
     probability = 0
-    entropy = 1
+    entropy = calculate_entropy(text)
     average_length = 1
     efficiency = (entropy/average_length)*100
 
@@ -369,7 +369,7 @@ def arithmetic_encoding(text):
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = "Out of the course scope"
     probability = 0
-    entropy = 1
+    entropy = calculate_entropy(text)
     average_length = "out of course scope"
     efficiency = "out of course scope"
 
@@ -392,7 +392,7 @@ def golomb_encoding(text):
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
     probability = 0
-    entropy = 1
+    entropy = calculate_entropy(text)
     average_length = 1
     efficiency = (entropy/average_length)*100
     return {
@@ -415,7 +415,7 @@ def lzw_encoding(text):
     bits_after = bits_before  # Placeholder, actual logic needed
     compression_ratio = 0  # Placeholder, actual logic needed
     probability = 0
-    entropy = 1
+    entropy = calculate_entropy(text)
     average_length = "out of course scope"
     efficiency = "out of course scope"
     return {
