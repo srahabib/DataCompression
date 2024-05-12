@@ -6,7 +6,39 @@ import math
 app = Flask(__name__)
 
 
+# CODE FROM Youssef
+def number_of_bits(original_data, compressed_data, compression_type):
+    if compression_type == "huffman":  # can work for GOLOMB in some examples
+        if isinstance(original_data, str):
+            # Assuming 8 bits per character
+            original_size_h = len(original_data) * 8
+        elif isinstance(original_data, int) or isinstance(original_data, float):
+            # Assuming 8 bits per character
+            original_size_h = len(original_data) * len(bin(original_data))-2
+        # Assuming its binary bits per code (for simplicity)
+        compressed_size_h = len(compressed_data) * \
+            len(str(max(compressed_data)))
+        return original_size_h, compressed_size_h
+    elif compression_type == "RLE":
+        original_size_r = len(original_data)*8
+        letters, numbers = zip(*compressed_data)
+        compressed_size_r = len(compressed_data) * \
+            (8 + math.ceil(math.log2(max(numbers)+1)))
+        return original_size_r, compressed_size_r
+    elif compression_type == "LZW":  # can work for GOLOMB in some examples
+        if isinstance(original_data, str):
+            # Assuming 8 bits per character
+            original_size = len(original_data) * 8
+        elif isinstance(original_data, int) or isinstance(original_data, float):
+            # Assuming 8 bits per character
+            original_size = len(original_data) * len(bin(original_data))-2
+        # Assuming its binary bits per code (for simplicity)
+        compressed_size = len(compressed_data) * \
+            (len(bin(max(compressed_data)))-2)
+        return original_size, compressed_size
+
 # CODE FROM KAREEM
+
 
 def Calc_probability(message):
     frequencies = {}
@@ -312,15 +344,17 @@ class RunLengthCodec:
 
 # Compression functions Example
 
-
+# Done
 def runlength_encoding(text):
     # Run Length Encoding and Decoding
     Obj_rl = RunLengthCodec()
     encoded_text_rl = Obj_rl.run_length_encode(text)
     decoded_text_rl = Obj_rl.run_length_decode(encoded_text_rl)
 
-    bits_before = 0
-    bits_after = 0  # Placeholder, actual logic needed
+    before, after = number_of_bits(text, encoded_text_rl, "RLE")
+
+    bits_before = before
+    bits_after = after  # Placeholder, actual logic needed
     compression_ratio = Calc_compression_ratio(text, encoded_text_rl, "RLE")
     # Calculate probability
     probability = Calc_probability(text)
@@ -351,9 +385,11 @@ def huffman_encoding(text):
     comp_ratio = Calc_compression_ratio(text, encoded_text_hf, "Huffman")
     avg_len = Calc_average_length(encoded_text_hf)
 
-    bits_before = len(text) * 8
-    bits_after = bits_before  # Placeholder, actual logic needed
-    compression_ratio = 0  # Placeholder, actual logic needed
+    before, after = number_of_bits(text, encoded_text_hf, "huffman")
+
+    bits_before = before
+    bits_after = after
+    # compression_ratio = 0  # Placeholder, actual logic needed
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
     average_length = Calc_average_length(text)
@@ -376,7 +412,7 @@ def arithmetic_encoding(text):
     decoded_text_ae = Obj_ae.decode(encoded_text_ae, len(text))
 
     bits_before = len(text) * 8
-    bits_after = bits_before  # Placeholder, actual logic needed
+    bits_after = "out of course scope"  # Placeholder, actual logic needed
     compression_ratio = Calc_compression_ratio(text, encoded_text_ae, "AE")
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
@@ -437,9 +473,10 @@ def lzw_encoding(text):
     lzw = LZW(127)
     encoded_text_lzw = lzw.lzw_compress(text)
     decoded_text_lzw = lzw.lzw_decompress(encoded_text_lzw)
-
-    bits_before = len(text) * 8
-    bits_after = bits_before  # Placeholder, actual logic needed
+    before, after = number_of_bits(
+        text, encoded_text_lzw, "LZW")
+    bits_before = before
+    bits_after = after  # Placeholder, actual logic needed
     compression_ratio = Calc_compression_ratio(text, encoded_text_lzw, "LZW")
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
