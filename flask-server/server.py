@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from collections import Counter
 import heapq
 import math
+import struct
 
 app = Flask(__name__)
 
@@ -36,6 +37,39 @@ def number_of_bits(original_data, compressed_data, compression_type):
         compressed_size = len(compressed_data) * \
             (len(bin(max(compressed_data)))-2)
         return original_size, compressed_size
+
+
+def float_to_binary(f):
+
+    integer_part, fractional_part = str(f).split('.')
+
+    integer_binary = bin(int(integer_part))[2:]
+
+    fractional_binary = bin(int(fractional_part))[2:]
+    fractional_part = int(fractional_part)
+
+    binary_representation = integer_binary + '.' + fractional_binary
+
+    return binary_representation
+
+
+def count_bits_for_float(binary_string):
+
+    integer_part, fractional_part = binary_string.split('.')
+
+    integer_bits = len(integer_part)
+
+    fractional_bits = len(fractional_part)
+
+    total_bits = integer_bits + fractional_bits
+
+    Exponent_bits = len(str(integer_part[1:]+fractional_part).lstrip('0'))
+
+    sig_bits = 1
+
+    Mantissa_bits = total_bits-1
+
+    return Exponent_bits + sig_bits + Mantissa_bits
 
 # CODE FROM KAREEM
 
@@ -411,8 +445,12 @@ def arithmetic_encoding(text):
     encoded_text_ae = Obj_ae.encode(text)
     decoded_text_ae = Obj_ae.decode(encoded_text_ae, len(text))
 
+    FTB = float_to_binary(encoded_text_ae)
+
+    after = count_bits_for_float(FTB)
+
     bits_before = len(text) * 8
-    bits_after = "out of course scope"  # Placeholder, actual logic needed
+    bits_after = after  # Placeholder, actual logic needed
     compression_ratio = Calc_compression_ratio(text, encoded_text_ae, "AE")
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
