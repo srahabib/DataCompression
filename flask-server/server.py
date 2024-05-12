@@ -480,8 +480,9 @@ def lzw_encoding(text):
     compression_ratio = Calc_compression_ratio(text, encoded_text_lzw, "LZW")
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
-    average_length = "out of course scope"
-    efficiency = "out of course scope"
+
+    average_length = Calc_average_length(text)
+    efficiency = (entropy/average_length)*100
     return {
         'bits_before': bits_before,
         'bits_after': bits_after,
