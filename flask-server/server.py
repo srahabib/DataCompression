@@ -8,6 +8,10 @@ app = Flask(__name__)
 
 
 # CODE FROM Youssef
+def CALC_efficiency(avg_length, entropy):
+    return (entropy/avg_length) * 100
+
+
 def number_of_bits(original_data, compressed_data, compression_type):
     if compression_type == "huffman":  # can work for GOLOMB in some examples
         if isinstance(original_data, str):
@@ -389,8 +393,8 @@ def runlength_encoding(text):
     before, after = number_of_bits(text, encoded_text_rl, "RLE")
 
     bits_before = before
-    bits_after = after  # Placeholder, actual logic needed
-    compression_ratio = Calc_compression_ratio(text, encoded_text_rl, "RLE")
+    bits_after = after
+    compression_ratio = bits_before/bits_after
     # Calculate probability
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
@@ -427,8 +431,8 @@ def huffman_encoding(text):
     # compression_ratio = 0  # Placeholder, actual logic needed
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
-    average_length = Calc_average_length(text)
-    efficiency = (entropy/average_length)*100
+    average_length = Calc_average_length(encoded_text_hf)
+    efficiency = CALC_efficiency(average_length, entropy)
 
     return {
         'bits_before': bits_before,
@@ -483,7 +487,7 @@ def golomb_encoding(text):
             text, encoded_text_gol, "Golomb")
         probability = Calc_probability(text)
         entropy = calculate_entropy(text)
-        average_length = Calc_average_length(text)
+        average_length = Calc_average_length(encoded_text_gol)
         efficiency = (entropy/average_length)*100
         return {
             'bits_before': bits_before,
@@ -520,8 +524,8 @@ def lzw_encoding(text):
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
 
-    average_length = Calc_average_length(text)
-    efficiency = (entropy/average_length)*100
+    average_length = Calc_average_length(encoded_text_lzw)
+    efficiency = CALC_efficiency(average_length, entropy)
     return {
         'bits_before': bits_before,
         'bits_after': bits_after,
