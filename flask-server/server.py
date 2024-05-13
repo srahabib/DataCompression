@@ -84,7 +84,8 @@ def Calc_probability(message):
     message_length = len(message)
     prob = {}
     for key, frequency in frequencies.items():
-        prob[key] = frequency / message_length
+        # Round to 2 decimal places
+        prob[key] = round(frequency / message_length, 2)
     return prob
 
 
@@ -393,8 +394,8 @@ def runlength_encoding(text):
     # Calculate probability
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
-    average_length = "out of course scope"
-    efficiency = "out of course scope"
+    average_length = "Not applicable"
+    efficiency = "Not applicable"
 
     # Catch the values so I can print it
     return {
@@ -451,11 +452,11 @@ def arithmetic_encoding(text):
 
     bits_before = len(text) * 8
     bits_after = after  # Placeholder, actual logic needed
-    compression_ratio = Calc_compression_ratio(text, encoded_text_ae, "AE")
+    compression_ratio = bits_before/bits_after
     probability = Calc_probability(text)
     entropy = calculate_entropy(text)
-    average_length = "out of course scope"
-    efficiency = "out of course scope"
+    average_length = "Not applicable"
+    efficiency = "Not applicable"
 
     return {
         'bits_before': bits_before,
@@ -476,8 +477,8 @@ def golomb_encoding(text):
         encoded_text_gol = obj_gol.encode(num_text)
         decoded_text_gol = obj_gol.decode(encoded_text_gol)
 
-        bits_before = len(text) * 8
-        bits_after = len(encoded_text_gol)
+        bits_before = len(text)
+        bits_after = len(str(bin(m))) + len(str(bin(num_text))) - 4
         compression_ratio = Calc_compression_ratio(
             text, encoded_text_gol, "Golomb")
         probability = Calc_probability(text)
@@ -501,8 +502,8 @@ def golomb_encoding(text):
             'compression_ratio': 'Input text must be numeric',
             'probability': 'Input text must be numeric ',
             'entropy': 'Input text must be numeric ',
-            'average_length': 'Input text must be numeric ',
-            'efficiency': 'Input text must be numeric'
+            'average_length': 'Not applicable',
+            'efficiency': 'Not applicable'
         }
 
 

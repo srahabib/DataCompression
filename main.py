@@ -1,6 +1,7 @@
 from collections import Counter
 import heapq
 import math
+import struct
 
 
 def efficiency(avg_length, entropy):
@@ -305,6 +306,70 @@ class RunLengthCodec:
         for char, count in encoded_text:
             decoded_text += char * count
         return decoded_text
+
+
+def number_of_bits(original_data, compressed_data, compression_type):
+    if compression_type == "huffman":  # can work for GOLOMB in some examples
+        if isinstance(original_data, str):
+            # Assuming 8 bits per character
+            original_size_h = len(original_data) * 8
+        elif isinstance(original_data, int) or isinstance(original_data, float):
+            # Assuming 8 bits per character
+            original_size_h = len(original_data) * len(bin(original_data))-2
+        # Assuming its binary bits per code (for simplicity)
+        compressed_size_h = len(compressed_data) * \
+            len(str(max(compressed_data)))
+        return original_size_h, compressed_size_h
+    elif compression_type == "RLE":
+        original_size_r = len(original_data)*8
+        letters, numbers = zip(*compressed_data)
+        compressed_size_r = len(compressed_data) * \
+            (8 + math.ceil(math.log2(max(numbers)+1)))
+        return original_size_r, compressed_size_r
+    elif compression_type == "LZW":  # can work for GOLOMB in some examples
+        if isinstance(original_data, str):
+            # Assuming 8 bits per character
+            original_size = len(original_data) * 8
+        elif isinstance(original_data, int) or isinstance(original_data, float):
+            # Assuming 8 bits per character
+            original_size = len(original_data) * len(bin(original_data))-2
+        # Assuming its binary bits per code (for simplicity)
+        compressed_size = len(compressed_data) * \
+            (len(bin(max(compressed_data)))-2)
+        return original_size, compressed_size
+
+
+def float_to_binary(f):
+
+    integer_part, fractional_part = str(f).split('.')
+
+    integer_binary = bin(int(integer_part))[2:]
+
+    fractional_binary = bin(int(fractional_part))[2:]
+    fractional_part = int(fractional_part)
+
+    binary_representation = integer_binary + '.' + fractional_binary
+
+    return binary_representation
+
+
+def count_bits_for_float(binary_string):
+
+    integer_part, fractional_part = binary_string.split('.')
+
+    integer_bits = len(integer_part)
+
+    fractional_bits = len(fractional_part)
+
+    total_bits = integer_bits + fractional_bits
+
+    Exponent_bits = len(str(integer_part[1:]+fractional_part).lstrip('0'))
+
+    sig_bits = 1
+
+    Mantissa_bits = total_bits-1
+
+    return Exponent_bits + sig_bits + Mantissa_bits
 
 
 text = input("Enter the text to encode: ")
